@@ -3,6 +3,7 @@ const header = document.createElement('div')
 header.className = 'header';
 document.body.appendChild(header)
 
+
 //creating the heading
 const headingLink = document.createElement('a')
 headingLink.setAttribute('href', 'index.html')
@@ -61,7 +62,7 @@ descContainer.appendChild(description)
 const howToUse = document.createElement('ul')
 howToUse.className = 'how-to-use';
 howToUse.innerHTML = `<div class="how-to-use-container"><ul><li>Type the name you want to search in the search box</li>
-                      <li>Click on the search icon</li>
+                      <li>Click on the search icon or press enter</li>
                       <li>After second step, results will be generated <a href="#result-container">below</a></li>
                       <li>Only the results of top two countries will be displayed</li></ul></div>`
 
@@ -374,8 +375,7 @@ searchIconId.addEventListener('click', ()=>{
             }
 
         searchNationality().then(data => {
-            console.log(data)
-            if(data.name !== searchBarId.value || searchBarId.value.includes(' ') || '1234567890'.includes(searchBarId.value)){
+            if(data.name !== searchBarId.value || searchBarId.value.includes(' ') || searchBarId.value.includes(['1234567890'])){
                 message.innerText = 'uh oh, something went wrong, enter a valid name' 
                 return
 
@@ -403,7 +403,12 @@ searchIconId.addEventListener('click', ()=>{
 
                         
                     } catch (err){
-                        resultContainer.innerHTML= `<p class="error-message">oops, <span>${searchBarId.value}</span> is not popular :(</p>`;
+                        if(searchBarId.value.length > 15){
+                            resultContainer.innerHTML= `<p class="error-message">oops, <span>${searchBarId.value.slice(0,15)+'...'} </span> is not popular :(</p>`;
+                        } else {
+                            resultContainer.innerHTML= `<p class="error-message">oops, <span>${searchBarId.value}</span> is not popular :(</p>`;
+                        }
+                        
 
                     }
     
@@ -416,5 +421,15 @@ searchIconId.addEventListener('click', ()=>{
 
     })
 
+//enter key implementation
+document.body.addEventListener('keyup', (event)=>{
+    if(event.keyCode == 13 && searchBarId.value.length > 0 ){
+        console.log('working')
+        searchIcon.click()
+        } else if(event.keyCode == 13 && searchBarId.value.length == 0){
+            headingLink.click()
+
+        }
+    } )
 
 //the end
