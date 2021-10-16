@@ -424,7 +424,6 @@ searchIconId.addEventListener('click', ()=>{
 //enter key implementation
 document.body.addEventListener('keyup', (event)=>{
     if(event.keyCode == 13 && searchBarId.value.length > 0 ){
-        console.log('working')
         searchIcon.click()
         } else if(event.keyCode == 13 && searchBarId.value.length == 0){
             headingLink.click()
